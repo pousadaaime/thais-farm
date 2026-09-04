@@ -472,11 +472,11 @@
     var url = normalizeUrl(rawUrl);
     if(!url) return null;
 
-    var toDelete = [];
-    url.searchParams.forEach(function(_, key){
-      if(/^utm_/i.test(key)) toDelete.push(key);
-    });
-    toDelete.forEach(function(key){ url.searchParams.delete(key); });
+    // Link colado pode vir sujo (fbclid, gclid, ref, aem_, utm de outra
+    // origem etc. — de compartilhamento do Instagram/Facebook/WhatsApp).
+    // Descarta tudo e fica só com a página + a UTM da Thaís.
+    url.search = '';
+    url.hash = '';
 
     url.searchParams.set('utm_source', sourceId);
     url.searchParams.set('utm_medium', state.config.medium || 'Organico');
